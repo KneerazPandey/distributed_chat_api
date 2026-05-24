@@ -10,3 +10,10 @@ class UserSelector:
     def get_by_email(email: str) -> User | None:
         return User.objects.filter(email=email).first()
     
+    def get_by_id(user_id: str) -> User | None:
+        try:
+            user = User.objects.get(id=user_id)
+            return user
+        except User.DoesNotExist:
+            return None
+    

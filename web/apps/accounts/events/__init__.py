@@ -1,1 +1,2 @@
 from .user_registered_event import UserRegisteredEvent
+from .forget_password_event import ForgetPasswordEvent

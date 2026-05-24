@@ -6,4 +6,5 @@ class AccountsConfig(AppConfig):
 
     def ready(self):
         import apps.accounts.handlers.send_user_registered_otp_email_handler
+        import apps.accounts.handlers.send_forget_password_otp_email_handler
         return super().ready()
