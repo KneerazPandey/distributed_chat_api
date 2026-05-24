@@ -1,0 +1,1 @@
+from .user_registered_email_task import send_user_registered_email_task

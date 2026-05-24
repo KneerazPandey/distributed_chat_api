@@ -1,0 +1,1 @@
+from .user_registered_event import UserRegisteredEvent

@@ -4,3 +4,6 @@ djangorestframework
 pillow
 djangorestframework-simplejwt
 gunicorn
+django-redis
+redis
+celery
