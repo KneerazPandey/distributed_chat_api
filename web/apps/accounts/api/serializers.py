@@ -1,7 +1,6 @@
-from django.conf import settings
 from rest_framework import serializers
+from apps.accounts.models import User
 
-User = settings.AUTH_USER_MODEL
 
 
 class UserRegistrationSerializer(serializers.Serializer):

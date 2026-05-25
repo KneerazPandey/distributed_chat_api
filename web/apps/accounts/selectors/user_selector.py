@@ -1,6 +1,5 @@
-from django.conf import settings
+from apps.accounts.models import User
 
-User = settings.AUTH_USER_MODEL
 
 class UserSelector:
     @staticmethod

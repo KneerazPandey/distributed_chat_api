@@ -46,6 +46,7 @@ class AuthService:
         event = UserRegisteredEvent(
             email=email,
             otp=otp,
+            username=None
         )
         EventDispatcher.dispatch(event)
 
@@ -73,7 +74,8 @@ class AuthService:
         
 
         user = UserSelector.get_by_email(email=email)
-        user.update(is_active=True)
+        user.is_active = True
+        user.save(update_fields=['is_active'])
 
         cache.delete(cache_key)
 
@@ -153,7 +155,8 @@ class AuthService:
         
 
         user = UserSelector.get_by_email(email=email)
-        user.update(is_active=True)
+        user.is_active = True
+        user.save(update_fields=['is_active'])
 
         token = PasswordResetToken.for_user(user)
         token["purpose"] = "password_reset"

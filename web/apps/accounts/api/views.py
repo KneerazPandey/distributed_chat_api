@@ -9,6 +9,7 @@ from apps.accounts.api.serializers import (
     ForgotPasswordSerializer, VerifyForgetPasswordOTPSerializer, 
     ResetPasswordSerializer
 )
+from apps.accounts.authentication import PasswordResetJWTAuthentication
 from apps.accounts.services import AuthService
 from core.responses import ApiResponse
 
@@ -99,7 +100,7 @@ class ChangePasswordAPIView(GenericAPIView):
 
         
         return ApiResponse.success(
-            message="Login Successfull.",
+            message="Password changed successfully",
             data=UserSerializer(user).data,
             status_code=status.HTTP_200_OK
         )
@@ -153,7 +154,7 @@ class VerifyForgetPasswordOTPAPIView(GenericAPIView):
 
 
 class ResetPasswordAPIView(GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    authentication_classes = [PasswordResetJWTAuthentication]
     serializer_class = ResetPasswordSerializer
 
     def post(self, request: Request, **kwargs):
@@ -164,7 +165,7 @@ class ResetPasswordAPIView(GenericAPIView):
 
         _ = AuthService.reset_password(
             token=token,
-            password=serializer.validated_data('new_password')
+            password=serializer.validated_data['new_password']
         )
         
         return ApiResponse.success(

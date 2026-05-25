@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 class EmailSender:
     @staticmethod
     def send(email: str, subject: str, text_content: str, context: dict, html_template_path: str):
+        print('called send method from email sender')
         subject = subject
         html_content = render_to_string(
             html_template_path, 
@@ -19,5 +20,7 @@ class EmailSender:
         )
 
         message.attach_alternative(html_content, 'text/html')
+
+        print('Everything okeay before sending')
 
         message.send()

@@ -7,3 +7,7 @@ gunicorn
 django-redis
 redis
 celery
+django-cors-headers
+django-allauth
+google-auth
+python-decouple
