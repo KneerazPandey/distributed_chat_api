@@ -2,7 +2,7 @@ from django.urls import path
 from apps.accounts.api.views import (
     UserRegistrationAPIView, VerifyRegistrationOTPAPIView, UserLoginAPIView,
     ChangePasswordAPIView, ForgetPasswordAPIView, VerifyForgetPasswordOTPAPIView,
-    ResetPasswordAPIView
+    ResetPasswordAPIView, GoogleAuthAPIView
 )
 
 
@@ -21,4 +21,6 @@ urlpatterns = [
     path('verify-forget-password-otp/', VerifyForgetPasswordOTPAPIView.as_view(), name='verify_forget_password_otp'),
 
     path('reset-password/', ResetPasswordAPIView.as_view(), name='reset_password'),
+
+    path('google/', GoogleAuthAPIView.as_view(), name='google'),
 ]

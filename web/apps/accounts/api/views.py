@@ -7,10 +7,10 @@ from apps.accounts.api.serializers import (
     UserRegistrationSerializer, VerifyRegistrationOTPSerializer, UserLoginSerializer,
     LoginResponseSerializer, ChangePasswordSerializer, UserSerializer, 
     ForgotPasswordSerializer, VerifyForgetPasswordOTPSerializer, 
-    ResetPasswordSerializer
+    ResetPasswordSerializer, GoogleAuthSerializer
 )
 from apps.accounts.authentication import PasswordResetJWTAuthentication
-from apps.accounts.services import AuthService
+from apps.accounts.services import AuthService, GoogleAuthService
 from core.responses import ApiResponse
 
 
@@ -174,3 +174,37 @@ class ResetPasswordAPIView(GenericAPIView):
             status_code=status.HTTP_200_OK
         )
 
+
+
+class GoogleAuthAPIView(GenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = GoogleAuthSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        token = serializer.validated_data["id_token"]
+        google_data = GoogleAuthService.verify_google_token(token)
+
+        if not google_data:
+            return ApiResponse.error(
+                message="Invalid Google Token",
+                errors={},
+                status_code=status.HTTP_401_UNAUTHORIZED
+            )
+
+        try:
+            login_result = GoogleAuthService.login_or_register(google_data)
+            return ApiResponse.success(
+                message="Successfully authenticated with google",
+                data=LoginResponseSerializer(login_result).data,
+                status_code=status.HTTP_200_OK
+            )
+
+        except ValueError as e:
+            return ApiResponse.error(
+                message=str(e),
+                errors={},
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
